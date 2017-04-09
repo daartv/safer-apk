@@ -29,6 +29,10 @@ class HomeScreen extends Component {
           }
           title="See yo friend yo"
         />
+        <Button 
+          onPress ={() => navigate('AddFence')}
+          title="Geofence"
+        />
       </View>
     )
   }
