@@ -21,6 +21,27 @@ export default class AddFence extends React.Component {
     this.setState(newState)
   }
 
+  makeSquare (center) {
+    let square = [
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0}, 
+  ]
+
+    square[0].lat = center.lat + 50 * 90/10000000
+    square[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    square[1].lat = center.lat + 50/2 * 90/10000000
+    square[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    square[2].lat = center.lat - 50/2 * 90/10000000
+    square[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    square[3].lat = center.lat - 50/2 * 90/10000000
+    square[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+
+
+  console.log(square);
+  }
+
 
   render() {
     return (
@@ -76,7 +97,7 @@ export default class AddFence extends React.Component {
         />
           <Button
               title='Set this fence'
-              onPress={() => console.log('geofence set in', this.state.coordinates, 'This is the label', this.state.label)}
+              onPress={() => this.makeSquare(this.state.coordinates)}
           />
         </View>
       </View>
