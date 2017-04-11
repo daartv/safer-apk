@@ -3,3 +3,5 @@ rootProject.name = 'safer'
 include ':app'
 include ':react-native-contacts'
 project(':react-native-contacts').projectDir = new File(settingsDir, '../node_modules/react-native-contacts/android')
+include ':react-native-geo-fencing'
+project(':react-native-geo-fencing').projectDir = new File(settingsDir, '../node_modules/react-native-geo-fencing/android')
