@@ -2,6 +2,8 @@ package com.safer;
 
 import com.facebook.react.ReactActivity;
 
+import com.surialabs.rn.geofencing.GeoFencingPackage;
+
 public class MainActivity extends ReactActivity {
 
     /**
@@ -12,4 +14,9 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "safer";
     }
+        protected List<ReactPackage> getPackages() {
+        	return Arrays.<ReactPackage>asList(
+            	new MainReactPackage(),
+            	new GeoFencingPackage()
+         );
 }
