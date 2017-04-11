@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Picker } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
+import GeoFencing from 'react-native-geo-fencing'
+
 
 const Item = Picker.Item
 export default class AddFence extends React.Component {
@@ -22,25 +24,41 @@ export default class AddFence extends React.Component {
   }
 
   makeSquare (center) {
-    let square = [
+    let squareFence = [
     {lat: 0, lng: 0}, 
     {lat: 0, lng: 0}, 
     {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0},
+    {lat: 0, lng: 0} 
   ]
 
-    square[0].lat = center.lat + 50 * 90/10000000
-    square[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    square[1].lat = center.lat + 50/2 * 90/10000000
-    square[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
-    square[2].lat = center.lat - 50/2 * 90/10000000
-    square[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    square[3].lat = center.lat - 50/2 * 90/10000000
-    square[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    squareFence[0].lat = center.lat + 50 * 90/10000000
+    squareFence[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    squareFence[1].lat = center.lat + 50/2 * 90/10000000
+    squareFence[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    squareFence[2].lat = center.lat - 50/2 * 90/10000000
+    squareFence[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    squareFence[3].lat = center.lat - 50/2 * 90/10000000
+    squareFence[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    squareFence[4].lat = center.lat + 50 * 90/10000000
+    squareFence[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
 
 
-  console.log(square);
-  }
+  console.log(squareFence);
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      let point = {
+        lat: position.coords.latitude,
+        lng: postion.coords.longitude
+      };
+      GeoFencing.containsLocation(point, squareFence)
+        .then(() => console.log('inside the fence'))
+        .catch(() => console.log('point is NOT within fence'))
+    },
+    (error) => alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+  )}
 
 
   render() {
