@@ -2,10 +2,7 @@ package com.safer;
 
 import com.facebook.react.ReactActivity;
 
-import com.surialabs.rn.geofencing.GeoFencingPackage;
-
 public class MainActivity extends ReactActivity {
-
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -15,8 +12,4 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "safer";
     }
-
-
 }
-
-

@@ -3,12 +3,11 @@ package com.safer;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.evollu.react.fcm.FIRMessagingPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.surialabs.rn.geofencing.GeoFencingPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new ReactNativePushNotificationPackage(),
+            new FIRMessagingPackage(),
           new ReactNativeContacts() 
-          new ReactNativeContacts(),
-          new GeoFencingPackage()
       );
     }
   };
@@ -45,6 +42,4 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
-
-
 }

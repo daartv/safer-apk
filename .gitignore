@@ -54,3 +54,5 @@ fastlane/screenshots
 
 #Local server endpoint 
 app/endpoint.js
+
+android/app/google-services.json

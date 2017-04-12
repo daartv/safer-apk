@@ -1,47 +1,17 @@
 import React, { Component } from 'react';
 import { AppState, View, Button, Text, StyleSheet } from 'react-native';
-import PushNotification from 'react-native-push-notification';
 
 // import endpoint from './endpoint.js';
 import FriendMap from './FriendMap.js';
-import PushController from './PushController.js';
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
   };
 
   static navigationOptions = {
     title: 'Favorites'
-  };
-
-  componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
-  };
-
-  componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
-  };
-
-  handleAppStateChange(appState) {
-    if (appState === 'background') {
-      console.log('in background');
-      
-      // PushNotification.configure({
-      //   onNotification: function(notification) {
-      //     console.log( 'NOTIFICATION:', notification );
-      //   },
-      //   popInitialNotification: true,
-      // });
-
-      PushNotification.localNotificationSchedule({
-        message: "Please work", // (required)
-        date: new Date(Date.now() + (3 * 1000)) // in 3 secs
-      });
-      console.log('after PushNotification');
-    }
   };
 
   render() {
@@ -61,7 +31,6 @@ export default class HomeScreen extends Component {
           onPress ={() => navigate('AddFence')}
           title="Geofence"
         />
-        <PushController />
       </View>
     );
   };
