@@ -20,32 +20,38 @@ export default class AddFence extends React.Component {
   onValueChange (label) {
     const newState = {};
     newState.label = label;
-    this.setState(newState)
+    this.setState(newState);
   }
 
   makeFence (center) {
     let fence = [
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0},
-    {lat: 0, lng: 0} 
-  ]
+    {lat_tlc: 0, lng_tlc: 0}, 
+    {lat_trc: 0, lng_trc: 0}, 
+    {lat_brc: 0, lng_brc: 0}, 
+    {lat_blc: 0, lng_blc: 0},
+    {lat_init: 0, lng_init: 0} 
+  ];
 
-    fence[0].lat = center.lat + 50 * 90/10000000
-    fence[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    fence[1].lat = center.lat + 50/2 * 90/10000000
-    fence[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
-    fence[2].lat = center.lat - 50/2 * 90/10000000
-    fence[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    fence[3].lat = center.lat - 50/2 * 90/10000000
-    fence[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
-    fence[4].lat = center.lat + 50 * 90/10000000
-    fence[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[0].lat_tlc = center.lat + 50 * 90/10000000;
+    fence[0].lng_tlc = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence[1].lat_trc = center.lat + 50/2 * 90/10000000;
+    fence[1].lng_trc = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence[2].lat_brc = center.lat - 50/2 * 90/10000000;
+    fence[2].lng_brc = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence[3].lat_blc = center.lat - 50/2 * 90/10000000;
+    fence[3].lng_blc = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence[4].lat_init = center.lat + 50 * 90/10000000;
+    fence[4].lng_init = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
 
 
   fence.label = this.state.label;
   console.log(fence);
+
+
+  //fetch to send the User ID, fence label and fence coordinates to the database
+
+
+  //This is the code for getting the current postion and checking if that positions is inside the polygon
 /*  navigator.geolocation.getCurrentPosition(
     (position) => {
       let point = {
