@@ -23,8 +23,8 @@ export default class AddFence extends React.Component {
     this.setState(newState)
   }
 
-  makeSquare (center) {
-    let squareFence = [
+  makeFence (center) {
+    let fence = [
     {lat: 0, lng: 0}, 
     {lat: 0, lng: 0}, 
     {lat: 0, lng: 0}, 
@@ -32,33 +32,33 @@ export default class AddFence extends React.Component {
     {lat: 0, lng: 0} 
   ]
 
-    squareFence[0].lat = center.lat + 50 * 90/10000000
-    squareFence[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    squareFence[1].lat = center.lat + 50/2 * 90/10000000
-    squareFence[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
-    squareFence[2].lat = center.lat - 50/2 * 90/10000000
-    squareFence[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
-    squareFence[3].lat = center.lat - 50/2 * 90/10000000
-    squareFence[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
-    squareFence[4].lat = center.lat + 50 * 90/10000000
-    squareFence[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[0].lat = center.lat + 50 * 90/10000000
+    fence[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[1].lat = center.lat + 50/2 * 90/10000000
+    fence[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[2].lat = center.lat - 50/2 * 90/10000000
+    fence[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[3].lat = center.lat - 50/2 * 90/10000000
+    fence[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat)
+    fence[4].lat = center.lat + 50 * 90/10000000
+    fence[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat)
 
 
-  console.log(squareFence);
-
-  navigator.geolocation.getCurrentPosition(
+  fence.label = this.state.label;
+  console.log(fence);
+/*  navigator.geolocation.getCurrentPosition(
     (position) => {
       let point = {
         lat: position.coords.latitude,
-        lng: postion.coords.longitude
+        lng: position.coords.longitude
       };
       GeoFencing.containsLocation(point, squareFence)
-        .then(() => console.log('inside the fence'))
-        .catch(() => console.log('point is NOT within fence'))
+        .then(() => alert('you are inside the fence'))
+        .catch(() => alert('Not inside the fence'))
     },
     (error) => alert(error.message),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  )}
+    {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+  )*/}
 
 
   render() {
@@ -69,6 +69,9 @@ export default class AddFence extends React.Component {
           onValueChange={this.onValueChange.bind(this)}>
           <Item label='Home' value='Home' />
           <Item label= 'Work' value='Work' />
+          <Item label= 'School' value='School' />
+          <Item label= 'Gym' value='Gym' />
+          <Item label= 'Bar' value='Bar' />   
         </Picker>
         <View style={{flexDirection: 'row'}}>
           <GooglePlacesAutocomplete
@@ -115,7 +118,7 @@ export default class AddFence extends React.Component {
         />
           <Button
               title='Set this fence'
-              onPress={() => this.makeSquare(this.state.coordinates)}
+              onPress={() => this.makeFence(this.state.coordinates)}
           />
         </View>
       </View>
