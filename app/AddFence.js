@@ -10,6 +10,7 @@ export default class AddFence extends React.Component {
     super(props);
     this.state = {
       label: 'Home'
+      user: '1234567'
     }
   }
 
@@ -24,27 +25,29 @@ export default class AddFence extends React.Component {
   }
 
   makeFence (center) {
-    let fence = [
-    {lat_tlc: 0, lng_tlc: 0}, 
-    {lat_trc: 0, lng_trc: 0}, 
-    {lat_brc: 0, lng_brc: 0}, 
-    {lat_blc: 0, lng_blc: 0},
-    {lat_init: 0, lng_init: 0} 
-  ];
+    let fence = {polygon:[
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0}, 
+    {lat: 0, lng: 0},
+    {lat: 0, lng: 0} 
+  ]};
 
-    fence[0].lat_tlc = center.lat + 50 * 90/10000000;
-    fence[0].lng_tlc = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence[1].lat_trc = center.lat + 50/2 * 90/10000000;
-    fence[1].lng_trc = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence[2].lat_brc = center.lat - 50/2 * 90/10000000;
-    fence[2].lng_brc = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence[3].lat_blc = center.lat - 50/2 * 90/10000000;
-    fence[3].lng_blc = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence[4].lat_init = center.lat + 50 * 90/10000000;
-    fence[4].lng_init = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[0].lat = center.lat + 50 * 90/10000000;
+    fence.polygon[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[1].lat = center.lat + 50/2 * 90/10000000;
+    fence.polygon[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[2].lat = center.lat - 50/2 * 90/10000000;
+    fence.polygon[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[3].lat = center.lat - 50/2 * 90/10000000;
+    fence.polygon[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[4].lat = center.lat + 50 * 90/10000000;
+    fence.polygon[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+
 
 
   fence.label = this.state.label;
+  fence.user = this.state.user;
   console.log(fence);
 
 
@@ -52,19 +55,20 @@ export default class AddFence extends React.Component {
 
 
   //This is the code for getting the current postion and checking if that positions is inside the polygon
-  navigator.geolocation.getCurrentPosition(
+/*  navigator.geolocation.getCurrentPosition(
     (position) => {
       let point = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      GeoFencing.containsLocation(point, squareFence)
+      console.log(point);
+      GeoFencing.containsLocation(point, fence.polygon)
         .then(() => alert('you are inside the fence'))
         .catch(() => alert('Not inside the fence'))
     },
     (error) => alert(error.message),
     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
-  )}
+  )}*/
 
 
   render() {
