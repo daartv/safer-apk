@@ -52,7 +52,7 @@ export default class AddFence extends React.Component {
 
 
   //This is the code for getting the current postion and checking if that positions is inside the polygon
-/*  navigator.geolocation.getCurrentPosition(
+  navigator.geolocation.getCurrentPosition(
     (position) => {
       let point = {
         lat: position.coords.latitude,
@@ -64,7 +64,7 @@ export default class AddFence extends React.Component {
     },
     (error) => alert(error.message),
     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
-  )*/}
+  )}
 
 
   render() {
