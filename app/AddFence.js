@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Picker } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import GeoFencing from 'react-native-geo-fencing'
-import endpoint from './endpoint.js';
+import {endpoint} from './endpoint.js';
 
 
 const Item = Picker.Item
@@ -60,7 +60,7 @@ fetch(`${endpoint}/api/labels`, {
   }
 })
   .then(function (response) {
-    alert('Fence created!');
+    alert(JSON.parse(response));
   })
   .catch(function (error) {
     alert('There was an error creating your fence');
@@ -69,7 +69,8 @@ fetch(`${endpoint}/api/labels`, {
 
 
   //This is the code for getting the current postion and checking if that positions is inside the polygon
-  navigator.geolocation.getCurrentPosition(
+
+/*  navigator.geolocation.getCurrentPosition(
     (position) => {
       let point = {
         lat: position.coords.latitude,
@@ -83,7 +84,8 @@ fetch(`${endpoint}/api/labels`, {
     (error) => alert(error.message),
     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
 
-  )};
+  )*/
+};
 
   render() {
     return (
