@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Picker } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import GeoFencing from 'react-native-geo-fencing'
+import endpoint from './endpoint.js';
 
 
 const Item = Picker.Item
@@ -50,7 +51,20 @@ export default class AddFence extends React.Component {
   fence.user = this.state.user;
   console.log(fence);
 
-
+fetch(`${endpoint}/api/labels`, {
+  method: 'POST',
+  body: JSON.stringify(fence),
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+})
+  .then(function (response) {
+    alert('Fence created!');
+  })
+  .catch(function (error) {
+    alert('There was an error creating your fence');
+  })
   //fetch to send the User ID, fence label and fence coordinates to the database
 
 
@@ -68,6 +82,7 @@ export default class AddFence extends React.Component {
     },
     (error) => alert(error.message),
     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+
   )};
 
   render() {
