@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, Picker } from 'react-native';
+import { View, Text, StyleSheet, Button, Picker, ListView } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import GeoFencing from 'react-native-geo-fencing'
 import {endpoint} from './endpoint.js';
@@ -10,6 +10,9 @@ export default class AddFence extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      fences: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      }),
       label: 'Home',
       user: '1234567'
     }
@@ -18,6 +21,28 @@ export default class AddFence extends React.Component {
   static navigationOptions = {
     title: 'Add a Geofence',
   };
+
+  componentDidMount () {
+    console.log('component mounted')
+    fetch(`${endpoint}/api/labels/?id=${this.state.user}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(function (response) {
+      return response.json()
+    })
+    .then((fences) => {
+      console.log(fences);
+      this.setState({fences: this.state.fences.cloneWithRows(fences)});
+
+    })
+    .catch(function (error) {
+      console.log('error retrieving current fences', error)
+    })
+  }
 
   onValueChange (label) {
     const newState = {};
@@ -60,36 +85,32 @@ fetch(`${endpoint}/api/labels`, {
   }
 })
   .then(function (response) {
-    alert(JSON.parse(response));
+    alert('Fence created!');
   })
   .catch(function (error) {
     alert('There was an error creating your fence');
   })
-  //fetch to send the User ID, fence label and fence coordinates to the database
-
-
-  //This is the code for getting the current postion and checking if that positions is inside the polygon
-
-/*  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      let point = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      console.log(point);
-      GeoFencing.containsLocation(point, fence.polygon)
-        .then(() => alert('you are inside the fence'))
-        .catch(() => alert('Not inside the fence'))
-    },
-    (error) => alert(error.message),
-    {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
-
-  )*/
 };
+
+renderFence(fence) {
+  return (
+    <View>
+      <Text>
+        {fence.label}
+      </Text>
+    </View>
+  )
+}
 
   render() {
     return (
       <View>
+      <View>
+        <ListView
+          dataSource={this.state.fences}
+          renderRow={this.renderFence}
+        />
+      </View>
         <Picker 
           selectedValue={this.state.label}
           onValueChange={this.onValueChange.bind(this)}>
