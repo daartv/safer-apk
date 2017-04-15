@@ -34,7 +34,26 @@ export default class HomeScreen extends Component {
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);
       this.setState({lastPosition});
+
+      let phoneNumber = '1234567' //Hard coded phone number to make it update coordinates
+      let userCoordinates = {};
+      userCoordinates.lat = position.coords.latitude.toString();
+      userCoordinates.lng = position.coords.longitude.toString();
       console.log('the new position is', position);
+      fetch(`${endpoint}/api/users/location/?id=${phoneNumber}`, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userCoordinates)
+      })
+        .then(function (response) {
+          console.log('Location updated!')
+        })
+        .catch(function (error) {
+          console.log('Problem sending updated location to the server')
+        })
     });
   };
 
