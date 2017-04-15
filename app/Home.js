@@ -97,6 +97,22 @@ export default class HomeScreen extends Component {
       return (
         <View>
           <HomeFavorite />
+        <View style={styles.container}>
+          <Text>Hello {this.state.user.name}</Text>
+          <Text>Notifications???</Text>
+          <Button
+            onPress={() => navigate('FriendMap', { 
+                friendId: 1234567890,
+                friendName: 'Kyle' 
+              })
+            }
+            title="See yo friend yo"
+          />
+          <TouchableOpacity onPress={() => {this._signOut(); }}>
+            <View style={{marginTop: 50}}>
+              <Text>Log out</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )
     }

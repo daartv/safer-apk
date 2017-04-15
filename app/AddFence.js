@@ -19,7 +19,7 @@ export default class AddFence extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Add a Geofence',
+    title: 'Your fences',
   };
 
   componentDidMount () {

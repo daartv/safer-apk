@@ -44,6 +44,9 @@ const MenuDrawer = DrawerNavigator({
   'Add Friend': { screen: AddFriendList },  
   Settings: { screen: Settings },
   'Log Out': { screen: LogOut },
+  AddFriend: { screen: AddFriendList },  
+  Settings: { screen: Settings },
+  Fences: {screen: AddFence}
 }, {
   drawerWidth: 200
 });
