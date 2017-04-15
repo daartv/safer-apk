@@ -47,7 +47,8 @@ Stack.navigationOptions = {
 const MenuDrawer = DrawerNavigator({
   Stack: { screen: Stack },
   AddFriend: { screen: AddFriendList },  
-  Settings: { screen: Settings }
+  Settings: { screen: Settings },
+  Fences: {screen: AddFence}
 
 }, {
   drawerWidth: 200

@@ -88,10 +88,6 @@ export default class HomeScreen extends Component {
             }
             title="See yo friend yo"
           />
-          <Button 
-            onPress ={() => navigate('AddFence')}
-            title="Geofence"
-          />
           <TouchableOpacity onPress={() => {this._signOut(); }}>
             <View style={{marginTop: 50}}>
               <Text>Log out</Text>
