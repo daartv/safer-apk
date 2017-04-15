@@ -21,10 +21,12 @@ export default class HomeScreen extends Component {
 
   componentDidMount() {
     this._setupGoogleSignin();
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.stringify(position);
         this.setState({initialPosition}, () => console.log(this.state));
+        console.log('Initial position', position)
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
@@ -32,6 +34,7 @@ export default class HomeScreen extends Component {
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);
       this.setState({lastPosition});
+      console.log('the new position is', position);
     });
   };
 
