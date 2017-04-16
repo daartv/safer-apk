@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, Picker, ListView } from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
-import GeoFencing from 'react-native-geo-fencing'
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {endpoint} from './endpoint.js';
 
 
@@ -59,16 +58,16 @@ export default class AddFence extends React.Component {
     {lat: 0, lng: 0} 
   ]};
 
-    fence.polygon[0].lat = center.lat + 50 * 90/10000000;
-    fence.polygon[0].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[1].lat = center.lat + 50/2 * 90/10000000;
-    fence.polygon[1].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[2].lat = center.lat - 50/2 * 90/10000000;
-    fence.polygon[2].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[3].lat = center.lat - 50/2 * 90/10000000;
-    fence.polygon[3].lng = center.lng - 50/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[4].lat = center.lat + 50 * 90/10000000;
-    fence.polygon[4].lng = center.lng + 50/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[0].lat = center.lat + 100 * 90/10000000;
+    fence.polygon[0].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[1].lat = center.lat + 100/2 * 90/10000000;
+    fence.polygon[1].lng = center.lng - 100/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[2].lat = center.lat - 100/2 * 90/10000000;
+    fence.polygon[2].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[3].lat = center.lat - 100/2 * 90/10000000;
+    fence.polygon[3].lng = center.lng - 100/2 * 90/10000000 / Math.cos(center.lat);
+    fence.polygon[4].lat = center.lat + 100 * 90/10000000;
+    fence.polygon[4].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
 
 
 

@@ -5,6 +5,7 @@ import { AppState, View, Button, Text, StyleSheet, TouchableOpacity, TextInput }
 import { endpoint, googleAuthWebClientId } from './endpoint.js';
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import PushController from './FCM/PushController.js';
+import GeoFencing from 'react-native-geo-fencing';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -13,17 +14,20 @@ export default class HomeScreen extends Component {
       user: null,
       initialPosition: 'unknown',
       lastPosition: 'unknown',
-      phoneNumber: ''
+      phoneNumber: '',
+      currentlyAt: 'unknown'
     };
   };
 
   static navigationOptions = {
     title: 'Favorites'
   };
+  
+  watchID: ?number = null;
 
-  componentDidMount() {
-    this._setupGoogleSignin();
+  geoMonitoring() {
 
+    //Getting coordinates and setting to the state
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.stringify(position);
@@ -37,26 +41,55 @@ export default class HomeScreen extends Component {
       var lastPosition = JSON.stringify(position);
       this.setState({lastPosition});
 
-      let phoneNumber = '1234567' //Hard coded phone number to make it update coordinates
-      let userCoordinates = {};
-      userCoordinates.lat = position.coords.latitude.toString();
-      userCoordinates.lng = position.coords.longitude.toString();
-      console.log('the new position is', position);
-      fetch(`${endpoint}/api/users/location/?id=${phoneNumber}`, {
-        method: 'PUT',
-        headers: {
+      let point = {
+        lat: position.coords.latitude, //position.coords.latitude
+        lng: position.coords.longitude, //position.coords.longitude
+      };
+      console.log('This is the position to pass into the checkFences function', point);
+      this.checkFences(point);
+    });
+  }
+
+  checkFences(currentPoint) {
+    let phoneNumber = '1234567'
+    fetch(`${endpoint}/api/labels/?id=${phoneNumber}`, {
+      method: 'GET',
+      headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userCoordinates)
-      })
-        .then(function (response) {
-          console.log('Location updated!')
-        })
-        .catch(function (error) {
-          console.log('Problem sending updated location to the server')
-        })
-    });
+      }
+    })
+    .then(function (response) {
+      return response.json()
+    })
+    .then((fences) => {
+      console.log('This are the fences', fences);
+      for (var fence of fences) {
+
+        let polygon = [
+          {lat: fence.latTlc, lng: fence.lngTlc}, //{lat: fence.latTlc, lng: fence.lngTlc}
+          {lat: fence.latTrc, lng: fence.lngTrc},
+          {lat: fence.latBrc, lng: fence.lngBrc},
+          {lat: fence.latBlc, lng: fence.lngBlc},
+          {lat: fence.latInit, lng: fence.lngInit},
+        ];
+        console.log('Transformed polygon', polygon)
+        console.log('Point', currentPoint)
+        GeoFencing.containsLocation(currentPoint, polygon)
+        .then(() => this.setState({currentlyAt: fence.label}, () => console.log(this.state.currentlyAt)))
+        .catch(() => this.setState({currentlyAt: 'Elsewhere'}, () => console.log(this.state.currentlyAt)))
+      }
+    })
+    .catch(function (error) {
+      console.log('error retrieving current fences', error)
+    })
+  }
+
+
+  componentDidMount() {
+    this._setupGoogleSignin();
+
+    this.geoMonitoring();
   };
 
   componentWillUnmount() {
