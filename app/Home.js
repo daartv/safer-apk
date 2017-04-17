@@ -15,7 +15,7 @@ export default class HomeScreen extends Component {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       phoneNumber: '',
-      currentlyAt: 'unknown'
+      currentlyAt: 'Elsewhere'
     };
   };
 
@@ -26,6 +26,8 @@ export default class HomeScreen extends Component {
   watchID: ?number = null;
 
   geoMonitoring() {
+    var indexLocated = 0;
+    var inAFence = false;
 
     //Getting coordinates and setting to the state
     navigator.geolocation.getCurrentPosition(
@@ -51,6 +53,7 @@ export default class HomeScreen extends Component {
   }
 
   checkFences(currentPoint) {
+    let inFence = false;
     let phoneNumber = '1234567'
     fetch(`${endpoint}/api/labels/?id=${phoneNumber}`, {
       method: 'GET',
@@ -64,7 +67,10 @@ export default class HomeScreen extends Component {
     })
     .then((fences) => {
       console.log('This are the fences', fences);
-      for (var fence of fences) {
+      var flag = false;
+      // for (var fence of fences) {
+      for (let i = 0; i < fences.length && !flag; i++) {
+        let fence = fences[i];
 
         let polygon = [
           {lat: fence.latTlc, lng: fence.lngTlc}, //{lat: fence.latTlc, lng: fence.lngTlc}
@@ -76,7 +82,7 @@ export default class HomeScreen extends Component {
         console.log('Transformed polygon', polygon)
         console.log('Point', currentPoint)
         GeoFencing.containsLocation(currentPoint, polygon)
-        .then(() => this.setState({currentlyAt: fence.label}, () => console.log(this.state.currentlyAt)))
+        .then(() => this.setState({currentlyAt: fence.label},  () => flag = true))
         .catch(() => this.setState({currentlyAt: 'Elsewhere'}, () => console.log(this.state.currentlyAt)))
       }
     })
