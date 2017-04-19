@@ -5,7 +5,7 @@ import {endpoint} from './endpoint.js';
 
 
 const Item = Picker.Item
-export default class AddFence extends React.Component {
+export default class AddFence extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,8 @@ export default class AddFence extends React.Component {
       }),
       label: 'Home',
       user: '1234567'
-    }
-  }
+    };
+  };
 
   static navigationOptions = {
     title: 'Your fences',
@@ -49,30 +49,15 @@ export default class AddFence extends React.Component {
     this.setState(newState);
   }
 
-  makeFence (center) {
-    let fence = {polygon:[
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0}, 
-    {lat: 0, lng: 0},
-    {lat: 0, lng: 0} 
-  ]};
-
-    fence.polygon[0].lat = center.lat + 100 * 90/10000000;
-    fence.polygon[0].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[1].lat = center.lat + 100/2 * 90/10000000;
-    fence.polygon[1].lng = center.lng - 100/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[2].lat = center.lat - 100/2 * 90/10000000;
-    fence.polygon[2].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[3].lat = center.lat - 100/2 * 90/10000000;
-    fence.polygon[3].lng = center.lng - 100/2 * 90/10000000 / Math.cos(center.lat);
-    fence.polygon[4].lat = center.lat + 100 * 90/10000000;
-    fence.polygon[4].lng = center.lng + 100/2 * 90/10000000 / Math.cos(center.lat);
-
-
+  makeFence (center, address) {
+    let fence = {
+      coordinates: this.state.coordinates,
+      address: this.state.address
+    };
 
   fence.label = this.state.label;
   fence.user = this.state.user;
+
   console.log(fence);
 
 fetch(`${endpoint}/api/labels`, {
@@ -96,6 +81,9 @@ renderFence(fence) {
     <View>
       <Text>
         {fence.label}
+      </Text>
+      <Text>
+        {fence.address}{'\n'}{'\n'}
       </Text>
     </View>
   )
@@ -128,7 +116,9 @@ renderFence(fence) {
             fetchDetails={true}
             renderDescription={(row) => row.description} // custom description render
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-              console.log(details.geometry.location)
+              console.log('details', details)
+              console.log('data', data)
+              this.setState({address: data.description});
               this.setState({coordinates: details.geometry.location}, function () {
                 console.log('This is the state', this.state.coordinates);
               })
@@ -166,7 +156,7 @@ renderFence(fence) {
         </View>
           <Button
               title='Set this fence'
-              onPress={() => this.makeFence(this.state.coordinates)}
+              onPress={() => this.makeFence(this.state.coordinates, )}
           />
       </View>
     );
