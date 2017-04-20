@@ -26,10 +26,8 @@ export default class AddFence extends Component {
     AuthAxios({
       url: `/api/labels/?id=${this.state.user}`
     })
-    .then(function (response) {
-      return response.json()
-    })
-    .then((fences) => {
+    .then(({data}) => {
+      let fences = data;
       this.setState({fences: this.state.fences.cloneWithRows(fences)});
 
     })
@@ -50,30 +48,21 @@ export default class AddFence extends Component {
       address: this.state.address
     };
 
-  fence.label = this.state.label;
-  fence.user = this.state.user;
+    fence.label = this.state.label;
+    fence.user = this.state.user;
 
-  AuthAxios({
-    url: '/api/labels',
-    method: 'post',
-    data: fence
-  })
-
-fetch(`${endpoint}/api/labels`, {
-  method: 'POST',
-  body: JSON.stringify(fence),
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-})
-  .then(function (response) {
-    alert('Fence created!');
-  })
-  .catch(function (error) {
-    alert('There was an error creating your fence');
-  })
-};
+    AuthAxios({
+      url: '/api/labels',
+      method: 'post',
+      data: fence
+    })
+    .then(function (response) {
+      alert('Fence created!');
+    })
+    .catch(function (error) {
+      alert('There was an error creating your fence');
+    })
+  };
 
 renderFence(fence) {
   return (
@@ -115,8 +104,6 @@ renderFence(fence) {
             fetchDetails={true}
             renderDescription={(row) => row.description} // custom description render
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-              console.log('details', details)
-              console.log('data', data)
               this.setState({address: data.description});
               this.setState({coordinates: details.geometry.location}, function () {
                 console.log('This is the state', this.state.coordinates);
