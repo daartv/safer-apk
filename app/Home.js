@@ -5,13 +5,10 @@ import { AppState, View, Button, Text, StyleSheet, TouchableOpacity, TextInput }
 import { endpoint, googleAuthWebClientId } from './endpoint.js';
 import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import PushController from './FCM/PushController.js';
-<<<<<<< HEAD
-import GeoFencing from 'react-native-geo-fencing';
 import AuthAxios from './AuthAxios.js';
 import axios from 'axios';
-=======
-import { distanceBetweenCoordinates, degreesToRadians } from './geoFencingUtils/geoFencingUtils.js'
->>>>>>> finds if the user is in a fence and stores the label and location to the database
+import { distanceBetweenCoordinates } from './geoFencingUtils/geoFencingUtils.js'
+
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -38,7 +35,7 @@ export default class HomeScreen extends Component {
         var initialPosition = JSON.stringify(position);
         this.setState({initialPosition});
       },
-      (error) => alert(JSON.stringify(error)),
+      (error) => alert(`We couldn't get your location`),
       {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -55,24 +52,14 @@ export default class HomeScreen extends Component {
 
   checkFences(currentPoint) {
     let phoneNumber = '1234567'
-    // fetch(`${endpoint}/api/labels/?id=${phoneNumber}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    return AuthAxios({
+    AuthAxios({
       url: `/api/labels/?id=${phoneNumber}`
     })
-    .then(function (response) {
-      return response.json()
-    })
-    .then((fences) => {
-      for (var fence of fences) {
+    .then(({data}) => {
+      let fences = data;
+      for (let fence of fences) {
         let proximity = distanceBetweenCoordinates(currentPoint.lat, currentPoint.lng, fence.lat, fence.lng);
-        let radius = 0.5;
-        let location = {};
+        const radius = 0.5;
         if (proximity < radius) {
           this.setState({currentlyAt: fence.label}, () => this.saveLocation());
           break;  
@@ -81,8 +68,8 @@ export default class HomeScreen extends Component {
         }
       }
     })
-    .catch(function (error) {
-      console.log('error retrieving current fences', error)
+    .catch((error) => {
+      alert(`Oh no, we couldn't get your fences!`)
     })
   }
 
@@ -102,8 +89,8 @@ export default class HomeScreen extends Component {
       },
       body: JSON.stringify(location)
     })
-    .then((response) => console.log('the location object sent', location))
-    .catch((error) => console.log('oh oh'))
+    .then((response) => console.log('Location updated'))
+    .catch((error) => alert('Location not updated'))
   }
 
   componentDidMount() {
