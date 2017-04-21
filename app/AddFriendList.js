@@ -54,11 +54,9 @@ export default class AddFriendList extends Component {
               method: 'post',
               data: {friends: friends}
             })
-            .then(function(response) {
-              return response.json();
-            })
-            .then((friends) => {
+            .then(({data}) => {
               console.log(friends);
+              let friends = data
               friends.sort((a, b) => {
                 if (a.hasApp && b.hasApp) {
                   if (a.name > b.name) { return 1; }

@@ -23,10 +23,8 @@ export default class CreateGroup extends Component {
     fetch(`${endpoint}/api/friends?groups=true`, {
       method: 'GET',
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then((friends) => {
+      .then(({data}) => {
+        let friends = data;
         console.log(friends);
         this.setState({
           friends: this.state.friends.cloneWithRows(friends),

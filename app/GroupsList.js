@@ -15,19 +15,32 @@ export default class GroupsList extends Component {
 
   componentWillMount () {
     console.log('getgroups')
-    fetch(`${endpoint}/api/groups`)
-    .then(response => {
-      return response.json();
+
+    AuthAxios({
+      url: `/api/groups`
     })
-    .then(groups => {
+    .then(({data}) => {
+      let groups = data;
       console.log(groups);
       this.setState({
         groups: this.state.groups.cloneWithRows(groups)
       });
     })
     .catch(err => {
-      console.log('There was error in getting groups', err);
+      console.log('There was an error in getting groups', err)
     })
+
+    // fetch(`${endpoint}/api/groups`)
+    // .then(({data}) => {
+    //   let groups = data;
+    //   console.log(groups);
+    //   this.setState({
+    //     groups: this.state.groups.cloneWithRows(groups)
+    //   });
+    // })
+    // .catch(err => {
+    //   console.log('There was error in getting groups', err);
+    // })
   }
 
   static navigationOptions = {

@@ -36,7 +36,7 @@ export default class HomeScreen extends Component {
         this.setState({initialPosition});
       },
       (error) => alert(`We couldn't get your location`),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 900000000}
+      {enableHighAccuracy: false, timeout: 20000, maximumAge: 90000000000000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);
@@ -57,13 +57,16 @@ export default class HomeScreen extends Component {
     })
     .then(({data}) => {
       let fences = data;
+      console.log(data)
       for (let fence of fences) {
         let proximity = distanceBetweenCoordinates(currentPoint.lat, currentPoint.lng, fence.lat, fence.lng);
         const radius = 0.5;
         if (proximity < radius) {
+          console.log(`You're in`, fence.label)
           this.setState({currentlyAt: fence.label}, () => this.saveLocation());
           break;  
         } else {
+          console.log('getting in the else block')
           this.setState({currentlyAt: 'Elsewhere'}, () => this.saveLocation());
         }
       }
@@ -74,6 +77,7 @@ export default class HomeScreen extends Component {
   }
 
   saveLocation () {
+    console.log('Save location called', this.state.currentlyAt)
     let location = {};
     let position = JSON.parse(this.state.lastPosition);
     location.lat = position.coords.latitude;
@@ -81,16 +85,13 @@ export default class HomeScreen extends Component {
     location.label = this.state.currentlyAt;
     location.user = '1234567'
 
-    fetch(`${endpoint}/api/users/location`, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(location)
+    AuthAxios({
+      url: `/api/users/location`,
+      method: 'put',
+      data: location
     })
-    .then((response) => console.log('Location updated'))
-    .catch((error) => alert('Location not updated'))
+    .then(response => console.log('Location updated'))
+    .catch(error => alert('Location not updated'))
   }
 
   componentDidMount() {

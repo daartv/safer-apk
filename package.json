@@ -13,7 +13,6 @@
     "react-native-checkbox": "^1.1.0",
     "react-native-contacts": "^0.8.1",
     "react-native-fcm": "^6.2.1",
-    "react-native-geo-fencing": "^0.1.0",
     "react-native-google-places-autocomplete": "^1.2.11",
     "react-native-google-signin": "^0.10.0",
     "react-native-maps": "^0.14.0",

@@ -16,7 +16,19 @@ export default class HomeFavorite extends Component {
   componentWillMount() {
     console.log('HOME FAVORITE')
     // let {name} = this.props.navigation.state.params.data;
-    fetch(`${endpoint}/api/groupUsers?name=FAVORITES`)
+
+    AuthAxios({
+      url: `/api/groupUsers?name=FAVORITES`
+    })
+    .then(({data}) => {
+      let members = data;
+      this.setState({members: this.state.members.cloneWithRows(members)})
+    })
+    .catch(err => {
+      console.log('There was an error fetching members', err);
+    })
+    
+    /*fetch(`${endpoint}/api/groupUsers?name=FAVORITES`)
     .then(response => {
       return response.json();
     })
@@ -27,7 +39,7 @@ export default class HomeFavorite extends Component {
     })
     .catch(err => {
       console.log('there was an error in fetching members', err);
-    });
+    });*/
   };
 
   render() {
