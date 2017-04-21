@@ -20,20 +20,21 @@ export default class CreateGroup extends Component {
   }
 
   componentWillMount() {
-    fetch(`${endpoint}/api/friends?groups=true`, {
-      method: 'GET',
+
+    AuthAxios({
+      url: `/api/friends?groups=true`
     })
-      .then(({data}) => {
-        let friends = data;
-        console.log(friends);
-        this.setState({
-          friends: this.state.friends.cloneWithRows(friends),
-        });
+    .then(({data}) => {
+      let friends = data;
+      console.log(friends);
+      this.setState({
+        friends: this.state.friends.cloneWithRows(friends),
       })
-      .catch((error) => {
-        console.log('There was an error in fetching your data: ', error);
-        return error;
-      });
+    })
+    .catch((error) => {
+      console.log('There was an error in fetching your data', error);
+      return error;
+    })
   }
 
   submitGroup() {
@@ -43,7 +44,20 @@ export default class CreateGroup extends Component {
       privacy: this.state.privacy,
     };
 
-    fetch(`${endpoint}/api/groups`, {
+
+    AuthAxios({
+      url: `/api/groups`,
+      method: `post`,
+      data:{groupSettings: groupSettings}
+    })
+    .then(({data}) => {
+      console.log('Your group was created')
+    })
+    .catch((error) => {
+      alert('There was a problem creating your group')
+    })
+    
+/*    fetch(`${endpoint}/api/groups`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -60,7 +74,7 @@ export default class CreateGroup extends Component {
       .catch((error) => {
         console.log('There was an error in fetching your data: ', error);
         return error;
-      });
+      });*/
     const { navigate } = this.props.navigation;
     navigate('GroupsList');
   }

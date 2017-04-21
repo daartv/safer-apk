@@ -27,19 +27,6 @@ export default class HomeFavorite extends Component {
     .catch(err => {
       console.log('There was an error fetching members', err);
     })
-    
-    /*fetch(`${endpoint}/api/groupUsers?name=FAVORITES`)
-    .then(response => {
-      return response.json();
-    })
-    .then(members => {
-      this.setState({
-        members: this.state.members.cloneWithRows(members)
-      });
-    })
-    .catch(err => {
-      console.log('there was an error in fetching members', err);
-    });*/
   };
 
   render() {
