@@ -31,11 +31,12 @@ export default class HomeScreen extends Component {
   geoMonitoring() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        console.log('got the position!')
         var initialPosition = JSON.stringify(position);
         this.setState({initialPosition});
       },
       (error) => alert(`We couldn't get your location`),
-      {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 900000000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);
