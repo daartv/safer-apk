@@ -56,25 +56,7 @@ export default class CreateGroup extends Component {
     .catch((error) => {
       alert('There was a problem creating your group')
     })
-    
-/*    fetch(`${endpoint}/api/groups`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({groupSettings: groupSettings})
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then((friends) => {
-        console.log(friends);
-      })
-      .catch((error) => {
-        console.log('There was an error in fetching your data: ', error);
-        return error;
-      });*/
+
     const { navigate } = this.props.navigation;
     navigate('GroupsList');
   }

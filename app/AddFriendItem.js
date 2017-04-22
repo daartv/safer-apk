@@ -25,7 +25,6 @@ export default class AddFriendList extends Component {
       // friend requests (ie, their add/invite friend button and friend only disappear
       // once our server returns a 200 message that we have successfully added/invited them)
 
-      return response.json();
     }).catch((error) => {
       console.log('There was an error in fetching your data: ', error);
       return error;

@@ -118,6 +118,9 @@ android {
     }
 }
 dependencies {
+
+    compile project(':react-native-maps')
+
     compile (project(':react-native-fcm')) {
         exclude group: "com.google.firebase"
     } // FCM
@@ -128,10 +131,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-contacts')
-    compile (project(':react-native-geo-fencing')) {
-        exclude group: 'com.google.android.gms:play-services-maps'
-        exclude group: 'com.google.maps.android:android-maps-utils'
-    }
 
     compile ("com.google.android.gms:play-services-base:10.0.1") {
         force = true;

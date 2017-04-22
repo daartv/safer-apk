@@ -59,6 +59,11 @@
       </receiver>      
       <!-- FCM end -->
 
+      <!-- React Native Maps -->
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBO_oPN7XTqPYZ7wlbug5C-EwbdtYMWwGo"
+      />
     </application>
 
 </manifest>

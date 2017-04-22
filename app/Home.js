@@ -36,7 +36,7 @@ export default class HomeScreen extends Component {
         this.setState({initialPosition});
       },
       (error) => alert(`We couldn't get your location`),
-      {enableHighAccuracy: false, timeout: 20000, maximumAge: 90000000000000}
+      {enableHighAccuracy: false, timeout: 20000, maximumAge: 900000000000000000000000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);

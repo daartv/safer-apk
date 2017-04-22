@@ -90,28 +90,28 @@ renderFence(fence) {
           selectedValue={this.state.label}
           onValueChange={this.onValueChange.bind(this)}>
           <Item 
-          label='Home' 
-          value='Home'
+            label='Home' 
+            value='Home'
           />
           <Item 
-          label='Work'
-          value='Work'
+            label='Work'
+            value='Work'
           />
           <Item 
-          label= 'School' 
-          value='School' 
+            label= 'School' 
+            value='School' 
           />
           <Item 
-          label= 'Gym' 
-          value='Gym' 
+            label= 'Gym' 
+            value='Gym' 
           />
           <Item 
-          label= 'Bar' 
-          value='Bar' 
+            label= 'Bar' 
+            value='Bar' 
           />   
         </Picker>
         <View 
-        style={{flexDirection: 'row'}}
+          style={{flexDirection: 'row'}}
         >
           <GooglePlacesAutocomplete
             placeholder='Input an address'
@@ -148,11 +148,11 @@ renderFence(fence) {
               rankby: 'distance'
             }}
             debounce={200}
-        />
+          />
         </View>
           <Button
-              title='Set this fence'
-              onPress={() => this.makeFence(this.state.coordinates, )}
+            title='Set this fence'
+            onPress={() => this.makeFence(this.state.coordinates, )}
           />
       </View>
     );
