@@ -19,7 +19,6 @@ export default class FriendMap extends Component {
   constructor(props) {
     super(props);
     this.state =  {};
-    console.log('THIS.PROPS.NAVIGATION.STATE.PARAMS', this.props.navigation.state.params);
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -28,7 +27,6 @@ export default class FriendMap extends Component {
 
   render() {
     const { data } = this.props.navigation.state.params;
-    console.log(data);
     if(data.showSetting === 'GPS' && data.currentLabel === 'Elsewhere') {return this.renderElsewhere(data)}
     if(data.showSetting === 'GPS') { return this.renderGPS(data); }
     if(data.showSetting === 'label') { return this.renderLabel(data); }
@@ -55,7 +53,6 @@ export default class FriendMap extends Component {
 
   renderGPS(data) {
     const { region } = this.props;
-    console.log(region);
     return (
       <View style={styles.mapContainer}>
         <MapView
