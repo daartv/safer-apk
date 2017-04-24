@@ -87,26 +87,25 @@ export default class FriendMap extends Component {
     );
   }
 
-  renderElsewhere(data) {
+    renderElsewhere(data) {
     return (
       <View style={styles.container}>
         <MapView
          style={styles.map}
          region={{
-          latitude: 20.021165,
-          longitude: -75.113672,
+          latitude: data.lat,
+          longitude: data.long,
           latitudeDelta: 0.04,
           longitudeDelta: 0.04,
           }}
         >
-        <MapView.Circle
-          center={{
-            latitude: 20.021165,
-            longitude: -75.113672
-          }}
-          radius={300}
-          fillColor={'#AED8CA', 'rgba(174,216,202,0.5)'}
-        />
+          <MapView.Marker 
+           title={data.currentLabel}
+           coordinate={{
+             latitude: data.lat,
+             longitude: data.long
+            }}
+          />
         </MapView>
       </View>
     );
