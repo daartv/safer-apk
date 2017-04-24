@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import MapView from 'react-native-maps';
 
 const styles = StyleSheet.create({
-  container: {
+  mapContainer: {
     ...StyleSheet.absoluteFillObject,
     height: 400,
     width: 400,
@@ -57,7 +57,7 @@ export default class FriendMap extends Component {
     const { region } = this.props;
     console.log(region);
     return (
-      <View style={styles.container}>
+      <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           region={{
@@ -89,7 +89,7 @@ export default class FriendMap extends Component {
 
     renderElsewhere(data) {
     return (
-      <View style={styles.container}>
+      <View style={styles.mapContainer}>
         <MapView
          style={styles.map}
          region={{
