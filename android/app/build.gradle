@@ -118,6 +118,9 @@ android {
     }
 }
 dependencies {
+
+    compile project(':react-native-maps')
+
     compile (project(':react-native-fcm')) {
         exclude group: "com.google.firebase"
     } // FCM

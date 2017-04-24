@@ -1,72 +1,38 @@
 import React, { Component } from 'react';
-/*import { MapView } from 'react-native-maps';*/
-import { View, Text, StyleSheet, Image, Switch, Button } from 'react-native';
-import AuthAxios from './AuthAxios.js';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import MapView from 'react-native-maps';
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});
 
 export default class FriendMap extends Component {
   constructor(props) {
     super(props);
-    let {showFriendSetting} = this.props.navigation.state.params.data;
-    let showLabel = (showFriendSetting === 'label' ? true : false); 
-
-    this.state =  {
-      showLabel: showLabel
-    };
-    this.switchChange = this.switchChange.bind(this);
-    this.subscribeTo = this.subscribeTo.bind(this);
-  }
-
-  switchChange() {
-    this.setState({
-      showLabel: !this.state.showLabel
-    })
-    let {id} = this.props.navigation.state.params.data;
-    let privacy = (this.state.showLabel ? 'GPS' : 'Label');
-    AuthAxios({
-      url: `/api/friends/${id}`,
-      method: 'put',
-      data: {privacy: privacy}
-    })
-    .then(({data}) => {
-    })
-    .catch(err => {
-      console.log(err);
-    }) 
+    this.state =  {};
+    console.log('THIS.PROPS.NAVIGATION.STATE.PARAMS', this.props.navigation.state.params);
   }
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.data.first
   });
 
-  subscribeTo(data) {
-    AuthAxios({
-      url: '/api/subscribe',
-      method: 'post',
-      data: {phoneNumber: data.phoneNumber}
-    })
-    .catch((err) => {
-      console.error('There was an error subscribing to the friend: ', err);
-    })
-  }
-
-  whichPageToRender () {
+  render() {
     const { data } = this.props.navigation.state.params;
+    console.log(data);
+    if(data.showSetting === 'GPS' && data.currentLabel === 'Elsewhere') {return this.renderElsewhere(data)}
     if(data.showSetting === 'GPS') { return this.renderGPS(data); }
     if(data.showSetting === 'label') { return this.renderLabel(data); }
     if(data.showSetting === 'pending') { return this.renderPending(data); }
-  }
-
-  render() {
-    return (
-      <View>
-      <Switch
-          onValueChange={this.switchChange}
-          value={this.state.showLabel}
-        />
-        <Text>{this.state.showLabel ? 'Show Only Label' : 'Show GPS'}</Text>
-        {this.whichPageToRender()}
-      </View>
-    )
   }
 
   renderPending(data) {
@@ -80,7 +46,6 @@ export default class FriendMap extends Component {
   renderLabel(data) {
     return (
       <View style={{marginTop: 10}}>
-        <Button title='Let me know when they get home' onPress={() => {this.subscribeTo(data)}} />
         <Text style={{textAlign: 'center', fontSize: 20}}>{data.first} checked in at:</Text> 
         <Text style={{textAlign: 'center', fontSize: 20}}>{data.currentLabel}</Text>
         <Text style={{textAlign: 'center', fontSize: 20}}>5 min ago</Text>
@@ -89,15 +54,60 @@ export default class FriendMap extends Component {
   }
 
   renderGPS(data) {
+    const { region } = this.props;
+    console.log(region);
     return (
-      <View style={{marginTop: 10}}>
-        <Button title='Let me know when they get home' onPress={() => {this.subscribeTo(data)}} />
-        <Text style={{textAlign: 'center', fontSize: 20}}>Checked In At:</Text>
-        <Image
-          style={{justifyContent: 'center', height: 350, width: 350}}
-          source={require('./Image/HackReactor2.png')}
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          region={{
+            latitude: data.lat,
+            longitude: data.long,
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.04,
+          }}
+        >
+          <MapView.Marker 
+            title={data.currentLabel}
+            coordinate={{
+             latitude: data.lat,
+             longitude: data.long
+            }}
+          />
+          <MapView.Circle
+            center={{
+              latitude: data.lat,
+              longitude: data.long
+            }}
+            radius={300}
+            fillColor={'#AED8CA', 'rgba(174,216,202,0.5)'}
+          />
+        </MapView>
+      </View>
+    );
+  }
+
+  renderElsewhere(data) {
+    return (
+      <View style={styles.container}>
+        <MapView
+         style={styles.map}
+         region={{
+          latitude: 20.021165,
+          longitude: -75.113672,
+          latitudeDelta: 0.04,
+          longitudeDelta: 0.04,
+          }}
+        >
+        <MapView.Circle
+          center={{
+            latitude: 20.021165,
+            longitude: -75.113672
+          }}
+          radius={300}
+          fillColor={'#AED8CA', 'rgba(174,216,202,0.5)'}
         />
-        <Text style={{textAlign: 'center', fontSize: 20}}>{data.currentLabel} 12 min Ago.</Text>
+        </MapView>
       </View>
     );
   }
